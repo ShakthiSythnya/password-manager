@@ -1,0 +1,64 @@
+<app-navbar></app-navbar>
+
+<div class="container mx-auto my-16">
+    <h1 class="text-5xl mt-0 mb-5">Sha Password manager</h1>
+    <p class="mb-5">Test data</p>
+    <button class="mb-5 mx-0.5 px-5 py-3 text-sm bg-gray-900 text-white shadow rounded-md"> Add New Site</button>
+
+    <!-- Alert-->
+    <div *ngIf="isSuccess && this.alertMessage" class="p-5 my-3 bg-green-200 text-lg">
+        {{this.alertMessage}}
+    </div>
+    <!-- Add new site form-->
+    <div class="px-20 py-10 mb-10 my-5 border-4 border-gray-900">
+        <h2 class="text-3xl text-center">{{formState}} </h2>
+        <p class="text-center">You can {{formState}} from the below form</p>
+        
+        <form #f="ngForm" (ngSubmit)="onSubmit(f.value)">
+            <div class="flex flex-col">
+                <label class="text-lg font-medium mb-2"> Site Name</label>
+               <input type="text" [(ngModel)]="site.siteName" name="siteName" class="border-2 border-gray-900 p-2 rounded-lg w-full" >
+            </div>
+
+            <div class="flex flex-col">
+                <label class="text-lg font-medium mb-2"> Site Url</label>
+               <input type="text" [(ngModel)]='site.siteUrl' name="siteUrl" class="border-2 border-gray-900 p-2 rounded-lg w-full" >
+            </div>
+
+            <div class="flex flex-col">
+                <label class="text-lg font-medium mb-2"> Site Image Url</label>
+               <input type="text" [(ngModel)]='site.siteImgUrl' name="siteImgUrl" class="border-2 border-gray-900 p-2 rounded-lg w-full" >
+            </div>
+
+            <button class="mt-10 mx-0.5 px-5 py-3 text-sm border-2 bg-gray-900 text-white shadow-md rounded">
+               {{formState}}
+            </button>
+
+            <button class="mt-10 mx-0.5 px-5 py-3 text-sm border-2 border-gray-900 text-gray-900 shadow-md rounded">
+                Cancel
+            </button>
+        </form>
+    </div>
+
+    <div class="grid grid-cols-4 gap-5">
+        <div *ngFor="let sit of allSites | async" class="shadow-lg border-2 border-gray-900">
+           
+            <img [src]="sit.siteImgUrl" alt="">
+            <h3 class="p-3 text-xl font-bold"> {{sit.siteName}}</h3>
+            <div class="w-60 m-3 px-3 bg-blue-200 text-blue-800 rounded-lg text-sm">
+               {{sit.siteUrl}}
+            </div>
+
+            <button routerLink="/password-list" [queryParams]="{id:sit.id, siteName: sit.siteName, siteUrl: sit.siteUrl, siteImgUrl: sit.siteImgUrl}" class="my-3 ml-3 mx-0.5 px-5 py-3 text-sm bg-gray-900 text-white shadow rounded-md">
+                Add New Password
+            </button>
+            <button (click)="editSite(sit)" class="my-3 ml-3 mx-0.5 px-5 py-3 text-sm border-2 border-gray-900 text-gray-900 shadow rounded-md">
+                Edit
+            </button>
+            <button (click)="deleteSite(sit)" class="my-3 ml-3 mx-0.5 px-5 py-3 text-sm border-2 border-gray-900 text-gray-900 shadow rounded-md">
+                Delete
+            </button>
+        </div>
+    </div>
+
+</div>
